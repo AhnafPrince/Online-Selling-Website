@@ -16,8 +16,8 @@
     
     <dependencies>
         <dependency>
-            <groupId>group</groupId>
-            <artifactId>artifact</artifactId>
+            <groupId>custom</groupId>
+            <artifactId>custom</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>

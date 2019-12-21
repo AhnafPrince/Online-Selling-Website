@@ -5,18 +5,32 @@
  */
 package web;
 
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Product;
 
 /**
  *
  * @author ahnaf
  */
 public class ProductServlet extends HttpServlet {
+
+    private ProductDAO productDAO;
+
+    @Override
+    public void init() {
+        productDAO = new ProductDAO();
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,9 +46,19 @@ public class ProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            HttpSession session = request.getSession();
+            out.println("hello");
+            List<Product> productList = null;
+            try {
+                productList = productDAO.selectAllProducts(out);
+            } catch (Exception ex) {
+                Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+                out.print("not connected");
+            }
             
-            
-            
+            session.setAttribute("productList", productList);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("product-list.jsp");
+            dispatcher.forward(request, response);
             
         }
     }
