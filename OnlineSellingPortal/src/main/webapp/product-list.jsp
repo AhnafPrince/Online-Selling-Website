@@ -41,8 +41,8 @@
             <form method="post" action="ProductDeleteServlet">
                 <b>ID : </b>  <input type="text" name="pId" >
                 <br><br>
-                <input id="delete" type="submit" value="Delete">  &nbsp;&nbsp;&nbsp;
-                <input type="submit" id="update" value="Update" onclick="form.action = 'ProductServlet';">
+                <input id="delete" type="submit" value="Delete" name="Delete">  &nbsp;&nbsp;&nbsp;
+                <input id="update" type="submit" value="Update" name="Update">
             </form>
 
         </center>

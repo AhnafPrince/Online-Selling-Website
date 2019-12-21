@@ -9,6 +9,7 @@ import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -17,13 +18,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Product;
 
 /**
  *
  * @author ahnaf
  */
-public class ProductDeleteServlet extends HttpServlet {
-
+public class ProductUpdateServlet extends HttpServlet {
+    
+    
     private ProductDAO productDAO;
 
     @Override
@@ -45,31 +48,24 @@ public class ProductDeleteServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String id = request.getParameter("pId");
-            
-            if (request.getParameter("Update") != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("idForUpdate", id);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("ProductUpdateServlet");
+            HttpSession session = request.getSession();
+            String id = (String)session.getAttribute("idForUpdate");
+
+            if (id == "" || id == null) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("product-list.jsp");
                 dispatcher.forward(request, response);
-
             } else {
-
-                if (id == "" || id == null) {
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("product-list.jsp");
-                    dispatcher.forward(request, response);
-
-                } else {
-                    int idInt = Integer.parseInt(id);
-                    try {
-                        productDAO.deleteProduct(idInt, out);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ProductDeleteServlet.class.getName()).log(Level.SEVERE, null, ex);
-                        out.print("coulden't Delete due to sql Exception! " + ex.getMessage());
-                    }
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("ProductServlet");
-                    dispatcher.forward(request, response);
-                }
+                int idInt = Integer.parseInt(id);
+                String[] product = null;
+            try {
+                product = productDAO.selectProductByID(idInt, out);
+            } catch (Exception ex) {
+                Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+                out.print("not connected");
+            }
+                session.setAttribute("productForUpdate", product);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("product-update-form.jsp");
+                dispatcher.forward(request, response);
             }
         }
     }
