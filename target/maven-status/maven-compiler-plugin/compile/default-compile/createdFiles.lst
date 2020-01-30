@@ -1,0 +1,7 @@
+web\UpdateConfirmServlet.class
+model\Product.class
+web\ProductInsertServlet.class
+web\ProductUpdateServlet.class
+web\ProductDeleteServlet.class
+dao\ProductDAO.class
+web\ProductServlet.class
