@@ -21,7 +21,7 @@ import model.Product;
  */
 public class ProductDAO {
 
-    private final String jdbcURL = "jdbc:mysql://localhost:3306/techparts";
+    private final String jdbcURL = "jdbc:mysql://localhost:3307/techparts";
     private final String jdbcUsername = "root";
     private final String jdbcPassword = "";
 
